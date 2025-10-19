@@ -61,22 +61,15 @@ def get_maximum(data):
     """Get the magnitude and location of the strongest earthquake in the data."""
    
     strongestEarthquakeDir = max(data['features'], key= get_magnitude)
-    maximumMagnitude = get_magnitude(strongestEarthquakeDir)
+    #There might be several earthquakes with such a magnitude
+    max_magnitude = get_magnitude(strongestEarthquakeDir)
+    for earthquake in data["features"]: 
+        if earthquake["properties"]["mag"] == max_magnitude: 
+            max_location = get_location(earthquake)
+            print(f"The strongest earthquake was at {max_location} with magnitude {max_magnitude}")
     locationOfMaximumMagnitude = get_location(strongestEarthquakeDir)
 
-   
-    # Another more complicated way of doing this (I left it as it could be useful for other people):    
-    # maximumMagnitude = 0
-    # locationOfMaximumMagnitude = [0,0]
-    # for i in range(count_earthquakes(data)):
-    #     earthquake = data["features"][i]
-    #     localMagnitude = get_magnitude(earthquake)
-
-    #     if localMagnitude > maximumMagnitude: 
-    #         maximumMagnitude = localMagnitude
-    #         locationOfMaximumMagnitude = get_location(earthquake)
-
-    return maximumMagnitude, locationOfMaximumMagnitude
+    return max_magnitude, locationOfMaximumMagnitude
     
 
 
@@ -86,4 +79,4 @@ data = get_data()
 #print()
 print(f"Loaded {count_earthquakes(data)}")
 max_magnitude, max_location = get_maximum(data)
-print(f"The strongest earthquake was at {max_location} with magnitude {max_magnitude}")
+# print(f"The strongest earthquake was at {max_location} with magnitude {max_magnitude}")
